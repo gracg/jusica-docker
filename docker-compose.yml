@@ -1,0 +1,43 @@
+version: "3"
+services:
+  db:
+    image: "postgres"
+    environment:
+      POSTGRES_DB: "jusica"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - './db:/var/lib/postgresql/data'
+    networks:
+      - docker_network
+  backend:
+    image: "gracg/jusica:latest"
+    volumes:
+      - ./out:/jusica/IO
+    ports:
+      - '4300:8080'
+    depends_on:
+      - db
+    networks:
+      - docker_network
+  menu:
+    image: "gracg/jusica-menu:latest"
+    ports:
+      - '4200:80'
+    networks:
+      - docker_network
+  nginx:
+    image: "nginx:latest"
+    ports:
+      - '4100:80'
+    volumes:
+      - ./etc:/etc/nginx/conf.d
+    networks:
+      - docker_network
+    depends_on:
+      - menu
+      - backend
+
+networks:
+  docker_network:
+    driver: bridge
