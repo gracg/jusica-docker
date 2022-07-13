@@ -14,6 +14,7 @@ services:
     image: "gracg/jusica:latest"
     volumes:
       - ./out:/jusica/IO
+      - ./conf:/jusica/conf
     ports:
       - '4300:8080'
     depends_on:
