@@ -26,10 +26,17 @@ services:
       - '4200:80'
     networks:
       - docker_network
+  portal:
+    image: "gracg/jusica-portal:latest"
+    ports:
+      - '4000:80'
+    networks:
+      - docker_network
   nginx:
     image: "nginx:latest"
     ports:
       - '4100:80'
+      - '4900:89'
     volumes:
       - ./etc:/etc/nginx/conf.d
     networks:
